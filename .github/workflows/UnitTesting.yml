@@ -1,0 +1,59 @@
+name: UnitTests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  BuildAndTest_x86:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout code
+      id: checkout
+      uses: actions/checkout@v3
+
+    - name: Add MSBuild to PATH
+      id: setup_msbuild
+      uses: microsoft/setup-msbuild@v1.0.2
+      
+    - name: Add VSTest to PATH
+      id: setup_vstest
+      uses: darenm/Setup-VSTest@v1
+
+    - name: Build
+      id: run_msbuild
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /p:Platform=x86 .\DnD_tool.sln
+
+    - name: Unit Tests
+      id: run_vstests
+      working-directory: ${{env.GITHUB_WORKSPACE}}Debug\
+      run: vstest.console.exe /Platform:x86 .\UnitTests.dll
+      
+  BuildAndTest_x64:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout code
+      id: checkout
+      uses: actions/checkout@v3
+
+    - name: Add MSBuild to PATH
+      id: setup_msbuild
+      uses: microsoft/setup-msbuild@v1.0.2
+      
+    - name: Add VSTest to PATH
+      id: setup_vstest
+      uses: darenm/Setup-VSTest@v1
+
+    - name: Build
+      id: run_msbuild
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /p:Platform=x64 .\DnD_tool.sln
+
+    - name: Unit Tests
+      id: run_vstests
+      working-directory: ${{env.GITHUB_WORKSPACE}}x64\Debug\
+      run: vstest.console.exe /Platform:x64 .\UnitTests.dll
