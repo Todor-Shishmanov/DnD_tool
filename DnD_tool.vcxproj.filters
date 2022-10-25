@@ -26,5 +26,8 @@
     <ClInclude Include="Code\map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
