@@ -1,9 +1,9 @@
-#include "map.h"
+#include "world.h"
 #include <stdexcept>
 #include <algorithm> // std::find
 #include <vector>
 
-Room::Room(std::map<Cell, ID> layout){
+Location::Location(std::map<Cell, ID> layout){
 	std::map<Cell, ID>::iterator it;
 	for (it = layout.begin(); it != layout.end(); ++it) {
 		if (it->second == NULL_OBJECT_ID) {
@@ -19,7 +19,7 @@ Room::Room(std::map<Cell, ID> layout){
 	}
 }
 
-bool Room::absolute_place(const ID & newID, const Cell & newCell){
+bool Location::absolute_place(const ID & newID, const Cell & newCell){
 	if (placed_id_.size() > 0 && placed_id_.find(newID) != placed_id_.end()) return false;
 	if (!is_available(newCell) || newID == NULL_OBJECT_ID) return false;
 
@@ -28,7 +28,7 @@ bool Room::absolute_place(const ID & newID, const Cell & newCell){
 	return true;
 }
 
-bool Room::relative_place(const ID& newID, const ID& referenceID, Direction dir){
+bool Location::relative_place(const ID& newID, const ID& referenceID, Direction dir){
 	if (placed_id_.size() > 0 && placed_id_.find(newID) != placed_id_.end()) return false;
 	if (newID == NULL_OBJECT_ID || referenceID == NULL_OBJECT_ID) return false;
 	
@@ -43,7 +43,7 @@ bool Room::relative_place(const ID& newID, const ID& referenceID, Direction dir)
 	return true;
 }
 
-bool Room::remove(const ID& removeID){
+bool Location::remove(const ID& removeID){
 	if (placed_id_.find(removeID) == placed_id_.end()) return false;
 	if (removeID == NULL_OBJECT_ID) return false;
 
@@ -59,7 +59,7 @@ bool Room::remove(const ID& removeID){
 	return true;
 }
 
-bool Room::move(const ID& moveID, Direction dir){
+bool Location::move(const ID& moveID, Direction dir){
 	Cell oldCell;
 	if (!get_cell(moveID, oldCell)) return false;
 
@@ -71,7 +71,7 @@ bool Room::move(const ID& moveID, Direction dir){
 	return true;
 }
 
-std::vector<ID> Room::in_range(const ID& referenceID, Direction dir, unsigned lenght) const{
+std::vector<ID> Location::in_range(const ID& referenceID, Direction dir, unsigned lenght) const{
 	std::vector<ID>inRange;
 	Cell currentCell;
 	if (!get_cell(referenceID, currentCell)) throw std::invalid_argument("Invalid referenceID: No such ID in layout");
@@ -83,20 +83,20 @@ std::vector<ID> Room::in_range(const ID& referenceID, Direction dir, unsigned le
 	return inRange;
 }
 
-std::map<Cell, ID> Room::get_layout() const{
+std::map<Cell, ID> Location::get_layout() const{
 	return layout_;
 }
 
-bool Room::is_available(const Cell& newCell) const{
+bool Location::is_available(const Cell& newCell) const{
 	if (!in_boundries(newCell)) return false;
 	return (layout_.at(newCell) == 0) ? true : false;
 }
 
-bool Room::in_boundries(const Cell& cell) const{
+bool Location::in_boundries(const Cell& cell) const{
 	return layout_.count(cell); // As map can contain each key max one time this is basically boolean.
 }
 
-Cell Room::direction_transformation(const Cell& cell, const Direction& dir) const {
+Cell Location::direction_transformation(const Cell& cell, const Direction& dir) const {
 	Cell newCell = cell;
 	switch (dir) {
 	case Direction::Forward :
@@ -131,7 +131,7 @@ Cell Room::direction_transformation(const Cell& cell, const Direction& dir) cons
 	return newCell;
 }
 
-bool Room::get_cell(const ID& desiredID, Cell& cellContainer) const{ // Slowest thing in the whole white world.
+bool Location::get_cell(const ID& desiredID, Cell& cellContainer) const{ // Slowest thing in the whole white world.
 	if (desiredID == NULL_OBJECT_ID || placed_id_.find(desiredID) == placed_id_.end()) return false;
 
 	std::map<Cell, ID>::const_iterator it;

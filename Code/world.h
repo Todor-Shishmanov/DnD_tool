@@ -10,7 +10,7 @@
 	Also should be moved to Game
 */
 typedef unsigned ID;
-#define NULL_OBJECT_ID 0 // Used in the Room::layout_ as empty ID
+#define NULL_OBJECT_ID 0 // Used in the Location::layout_ as empty ID
 
 enum class Direction {
 	Forward = 0,
@@ -25,6 +25,9 @@ enum class Direction {
 	BRight
 };
 
+// ToDO:
+// - Make Cell (think about diff name like Position) std::pair<unsigned, unsigned>. Getting elements is done with '.first' and '.second' and not with '.x' and '.y'.
+// - Might not be a bad idea to create IDCell as std::pair<ID, Cell>. It is used in everything that deals with Location.
 struct Cell {
 	Cell() : x(0), y(0) {}
 	Cell(unsigned x, unsigned y) : x(x), y(y) {}
@@ -38,10 +41,10 @@ struct Cell {
 
 // For future references: layout can be a non-square shape, 
 // meaning that size_x and size_y don't actually make much sence.
-class Room {
+class Location {
 public:
 
-	Room(std::map<Cell, ID> layout);
+	Location(std::map<Cell, ID> layout);
 
 	bool absolute_place(const ID& newID, const Cell& newCell);
 	bool relative_place(const ID& newID, const ID& referenceID, Direction dir);
@@ -71,13 +74,13 @@ It doesn't change rooms, nor does it create more rooms.
 To manage a connection of rooms add them to the Map with add_room().
 You can access the list of rooms that a specific one is connected to with get_adjacent().
 
-Big problem : Map uses Room* to manage connections. This means that if a room goes out of scope or is destroyed without the knowleadge of Map then there will be an invalid pointer.
+Big problem : Map uses Location* to manage connections. This means that if a room goes out of scope or is destroyed without the knowleadge of Map then there will be an invalid pointer.
 This is more of a design problem, which comes from the fact that there is no way to distingish two rooms with the same layout and entry_point. 
 This design uses the fact that two different rooms will have two different addresses in memory.
 
 Maybe this functionallity belongs to the future Game class?
 
-TODO 10-08 Toto: Change the implementation of entry point. The logic must be handled by Map not by Room.
-				 Think about the interaction between Room->Game->Object->Game. Example: Player wants to pass through door. Does he have key?
+TODO 10-08 Toto: Change the implementation of entry point. The logic must be handled by Map not by Location.
+				 Think about the interaction between Location->Game->Object->Game. Example: Player wants to pass through door. Does he have key?
 */
 #endif // MAP_HEADER

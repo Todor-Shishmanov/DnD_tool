@@ -141,10 +141,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Code\main.cpp" />
-    <ClCompile Include="Code\map.cpp" />
+    <ClCompile Include="Code\world.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\map.h" />
+    <ClInclude Include="Code\world.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

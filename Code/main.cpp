@@ -1,4 +1,4 @@
-#include "map.h"
+#include "world.h"
 typedef std::pair<Cell, ID> pair;
 
 std::map <Cell, ID> layout_ = { pair(Cell(0, 0), NULL_OBJECT_ID), pair(Cell(1, 0), NULL_OBJECT_ID), pair(Cell(2, 0), NULL_OBJECT_ID),
@@ -9,6 +9,6 @@ std::map <Cell, ID> layout_ = { pair(Cell(0, 0), NULL_OBJECT_ID), pair(Cell(1, 0
 								pair(Cell(0, 5), NULL_OBJECT_ID), pair(Cell(1, 5), NULL_OBJECT_ID), pair(Cell(2, 5), NULL_OBJECT_ID)
 };
 int main() {
-	Room r(layout_);
+	Location l(layout_);
 	return 0;
 }
