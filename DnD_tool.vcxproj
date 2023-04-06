@@ -141,9 +141,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Code\main.cpp" />
+    <ClCompile Include="Code\quest_tracker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\dummy.h" />
+    <ClInclude Include="Code\quest_tracker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
