@@ -113,13 +113,13 @@ namespace DnD {
 	struct Description {
 		Description(std::string name, unsigned age, unsigned height, unsigned weight, Color eyes_color, Color hair_color, Color skin);
 
-		const std::string name;
-		const unsigned age;
-		const unsigned height;
-		const unsigned weight;
-		const Color eyes_color;
-		const Color hair_color;
-		const Color skin;
+		std::string name;
+		unsigned age;
+		unsigned height;
+		unsigned weight;
+		Color eyes_color;
+		Color hair_color;
+		Color skin;
 	};
 
 	class CombatAttributes {
@@ -127,22 +127,39 @@ namespace DnD {
 		CombatAttributes(unsigned armor_class, int initiative, unsigned speed, unsigned hp, unsigned temp_hp);
 
 		bool hit(unsigned attack_roll, unsigned damage);
+
+		inline unsigned HP() const { return HP_; }
+		inline unsigned temporary_HP() const { return temporary_HP_; }
+		inline unsigned armor_class() const { return armor_class_; }
+		inline unsigned speed() const { return speed_; }
+		inline unsigned initiative() const { return initiative_; }
+		
+		void heal(unsigned heal);
+		void gain_temporary_HP(unsigned bonus_temp_hp);
+		void change_speed(int delta);
+		void set_initiative(unsigned new_initiative);
+		
 	private:
+		unsigned max_HP_;
 		unsigned HP_;
 		unsigned temporary_HP_;
-		int initiative_;
-		unsigned speed_;
 		unsigned armor_class_;
+		unsigned speed_;
+		int initiative_;
 	};
 
 	class Stats {
 	public:
 		Stats(std::map<AbilityScore, unsigned> ability_scores, std::map<Skill, int> skills, std::set<Skill> proficient_skills, unsigned proficiency_bonus);
 
-		int skill_check_bonus(const Skill& skill);
-		int saving_throw_bonus(const AbilityScore& ability_score);
-		int modifier(const AbilityScore& ability_score);
-		unsigned passive_perseption();
+		int skill_check_bonus(const Skill skill) const;
+		int saving_throw_bonus(const AbilityScore ability_score) const;
+		int modifier(const AbilityScore ability_score) const;
+		unsigned passive_perseption() const;
+
+		void set_ability_score(const AbilityScore ac, const unsigned new_value);
+		void add_proficiency(const Skill skill);
+		void set_proficiency_bonus(const unsigned new_bonus);
 
 	private:
 		std::map<AbilityScore, unsigned> ability_scores_;
@@ -157,14 +174,14 @@ namespace DnD {
 
 		unsigned level();
 		void level_up(); // Create new Stats and CombatAttributes. 
-
 		
 		const Race race;
 		const Class character_class;
 		const Background background;
+		const Description description;
 		Stats stats;
 		CombatAttributes combat_attributes;
-		Description description;
+		
 
 	private:
 		unsigned level_;
