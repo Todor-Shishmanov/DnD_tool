@@ -15,10 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test_map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="character_test.cpp">
+    <ClCompile Include="test_dummy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
